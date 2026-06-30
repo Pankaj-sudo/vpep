@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "order": {
+      "title": "Order",
+      "description": "An e-commerce order representing purchased clinical-grade peptides",
+      "type": "object",
+      "properties": {
+        "order_id": { "type": "string", "description": "Unique order ID beginning with PT-" },
+        "customer_name": { "type": "string" },
+        "customer_email": { "type": "string", "format": "email" },
+        "customer_phone": { "type": "string", "description": "11-digit mobile phone starting with 09" },
+        "shipping_address": { "type": "string" },
+        "city": { "type": "string" },
+        "delivery_method": { "type": "string", "enum": ["Lalamove", "GrabExpress"] },
+        "payment_method": { "type": "string", "enum": ["GCash"] },
+        "payment_proof": { "type": "string", "description": "Base64 encoded payment receipt screenshot under 500KB" },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "shipping_fee": { "type": "number" },
+        "total_amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "Shipped"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["order_id", "customer_name", "customer_email", "customer_phone", "shipping_address", "city", "delivery_method", "payment_method", "payment_proof", "items", "subtotal", "shipping_fee", "total_amount", "status", "created_at", "updated_at"]
+    },
+    "status_history": {
+      "title": "StatusHistory",
+      "description": "An audit entry representing an order status progression step",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "Shipped"] },
+        "updated_by": { "type": "string", "format": "email" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["status", "updated_by", "created_at"]
+    }
+  },
+  "firestore": {
+    "orders/{orderId}": {
+      "schema": "order",
+      "description": "Collection storing e-commerce orders placed by users"
+    },
+    "orders/{orderId}/status_history/{historyId}": {
+      "schema": "status_history",
+      "description": "Subcollection tracking detailed administrative status progression of a specific order"
+    }
+  }
+}

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>VitaPep | Premium Research Peptides &amp; Essentials</title>
+    
+    <!-- Premium SEO &amp; Meta Tags -->
+    <meta name="description" content="Scientific-grade premium research peptides &amp; essentials in the Philippines. HPLC-certified, sterile-filtered, and vacuum-sealed for analytical excellence. Fast Local Lalamove &amp; Grab Shipping. Strictly for laboratory research purposes only." />
+    <meta name="keywords" content="peptides, research peptides, peptides philippines, BPC-157, Semaglutide, Retatrutide, GHK-Cu, NAD+, biohacking, HPLC certified, vitapep, vitapep.ph, vpep" />
+    <meta name="author" content="VitaPep Laboratory" />
+    <meta name="theme-color" content="#FAF6EE" />
+    
+    <!-- Open Graph / Social Media Sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VitaPep | Premium Research Peptides &amp; Essentials" />
+    <meta property="og:description" content="HPLC-certified, medical-grade research standard peptides. Reconstitution-ready, sterile-filtered, vacuum-sealed vials for laboratory research." />
+    <meta property="og:site_name" content="VitaPep" />
+    <meta property="og:url" content="https://vitapep.ph" />
+    
+    <!-- Modern Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230090B0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.31M14 2v7.31v0M4 22h16M10 9.3a1.5 1.5 0 1 0 4 0M14 9.32a6.32 6.32 0 0 1 5.37 5.9C19.74 18.6 17.5 22 12 22S4.26 18.6 4.63 15.22a6.32 6.32 0 0 1 5.37-5.92'/%3E%3C/svg%3E" />
+
+    <!-- Google Font Imports -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Premium Interactive Preloader Styling -->
+    <style>
+      :root {
+        --light-bg: #FAF6EE;
+        --accent-primary: #0090B0;
+        --accent-glow: rgba(0, 144, 176, 0.18);
+        --text-primary: #1A2235;
+        --text-muted: #5E6E85;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--light-bg);
+        color: var(--text-primary);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      
+      /* Preloader container with smooth exit scale/fade */
+      .preloader-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: var(--light-bg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, opacity;
+      }
+
+      /* Premium Vercel/Stripe Glassmorphic Card Frame */
+      .preloader-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 60px;
+        background: rgba(250, 246, 238, 0.4);
+        backdrop-blur: 20px;
+        border: 1px solid rgba(228, 222, 207, 0.5);
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
+      }
+
+      /* Biotech orbit molecular loader design */
+      .biotech-loader {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .loader-center {
+        width: 20px;
+        height: 20px;
+        background: var(--accent-primary);
+        border-radius: 5px;
+        transform: rotate(45deg);
+        box-shadow: 0 0 24px var(--accent-primary);
+        animation: loader-pulse 1.8s infinite ease-in-out alternate;
+      }
+      .loader-ring {
+        position: absolute;
+        width: 76px;
+        height: 76px;
+        border: 2px solid transparent;
+        border-top-color: var(--accent-primary);
+        border-bottom-color: var(--accent-primary);
+        border-radius: 50%;
+        animation: loader-spin 2.2s infinite linear;
+      }
+      .loader-ring-inner {
+        position: absolute;
+        width: 52px;
+        height: 52px;
+        border: 1px dashed rgba(0, 144, 176, 0.4);
+        border-radius: 50%;
+        animation: loader-spin-reverse 3.5s infinite linear;
+      }
+      
+      @keyframes loader-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes loader-spin-reverse {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
+      }
+      @keyframes loader-pulse {
+        0% { transform: rotate(45deg) scale(0.85); opacity: 0.6; }
+        100% { transform: rotate(45deg) scale(1.15); opacity: 1; }
+      }
+
+      /* Luxury expanding text brand title */
+      .brand-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 26px;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-primary);
+        margin: 12px 0 6px 0;
+        animation: brand-track 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      .brand-title span {
+        color: var(--accent-primary);
+      }
+
+      @keyframes brand-track {
+        0% { letter-spacing: -0.05em; opacity: 0; filter: blur(4px); }
+        100% { letter-spacing: 0.16em; opacity: 1; filter: blur(0); }
+      }
+
+      .brand-sub {
+        font-family: monospace;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        color: var(--text-muted);
+        opacity: 0.8;
+        margin-bottom: 28px;
+      }
+
+      /* Percentage indicator & thin track line */
+      .percentage-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 160px;
+      }
+      .percentage-text {
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--accent-primary);
+        margin-bottom: 8px;
+        letter-spacing: 0.05em;
+      }
+      .progress-line-track {
+        width: 100%;
+        height: 2px;
+        background: #E4DECF;
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .progress-line-bar {
+        height: 100%;
+        width: 0%;
+        background: var(--accent-primary);
+        border-radius: 99px;
+        box-shadow: 0 0 6px var(--accent-primary);
+        transition: width 0.1s ease-out;
+      }
+
+      /* Exit animation trigger classes */
+      .preloader-overlay.exit {
+        opacity: 0;
+        transform: scale(1.04);
+        pointer-events: none;
+      }
+      .preloader-overlay.exit .preloader-card {
+        transform: scale(0.92);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .preloader-overlay { display: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Premium Interactive Preloader -->
+    <div id="preloader" class="preloader-overlay">
+      <div class="preloader-card">
+        <div class="biotech-loader" aria-hidden="true">
+          <div class="loader-ring"></div>
+          <div class="loader-ring-inner"></div>
+          <div class="loader-center"></div>
+        </div>
+        <h2 class="brand-title">Vita<span>Pep</span></h2>
+        <div class="brand-sub">Console Interface</div>
+        <div class="percentage-wrap">
+          <div class="percentage-text" id="preloader-percentage">0%</div>
+          <div class="progress-line-track">
+            <div class="progress-line-bar" id="preloader-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main React Mount Pivot -->
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Preloader Auto-Fadeout once DOM is hydrated -->
+    <script>
+      (function() {
+        const percentEl = document.getElementById('preloader-percentage');
+        const barEl = document.getElementById('preloader-bar');
+        const overlayEl = document.getElementById('preloader');
+        
+        if (!percentEl || !barEl || !overlayEl) return;
+
+        let currentPercent = 0;
+        let isLoaded = false;
+
+        // Smooth increment loop
+        const interval = setInterval(() => {
+          if (currentPercent < 88) {
+            // Speed up early load
+            currentPercent += Math.floor(Math.random() * 8) + 2;
+            if (currentPercent > 88) currentPercent = 88;
+          } else if (isLoaded) {
+            // Snap to 100 once page says it's ready
+            currentPercent += Math.floor(Math.random() * 12) + 8;
+            if (currentPercent >= 100) {
+              currentPercent = 100;
+              clearInterval(interval);
+              finishPreloader();
+            }
+          }
+          
+          percentEl.textContent = currentPercent + '%';
+          barEl.style.width = currentPercent + '%';
+        }, 60);
+
+        // Page fully loaded hook
+        window.addEventListener('load', () => {
+          isLoaded = true;
+        });
+
+        // Backup safeguard in case load event takes too long
+        setTimeout(() => {
+          isLoaded = true;
+        }, 1200);
+
+        function finishPreloader() {
+          setTimeout(() => {
+            overlayEl.classList.add('exit');
+            setTimeout(() => {
+              overlayEl.remove();
+            }, 650);
+          }, 200);
+        }
+      })();
+    </script>
+  </body>
+</html>

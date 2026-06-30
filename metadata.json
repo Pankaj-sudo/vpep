@@ -1,0 +1,6 @@
+{
+  "name": "VitaPep",
+  "description": "Premium clinical peptide e-commerce platform featuring active chemical batch analysis trackers, reconstitution dosage calculators, and secure Philippine GCash payment channels.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
