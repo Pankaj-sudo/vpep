@@ -21,6 +21,7 @@ import {
 import { Order, OrderStatus, OrderStatusHistory, Product } from '../types.ts';
 import { ADMIN_EMAILS, PRODUCTS } from '../products.ts';
 import { CoaLibrary } from './CoaLibrary.tsx';
+import { ProductImage } from './ProductImage.tsx';
 import { 
   Search, 
   ListFilter, 
@@ -74,11 +75,17 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
   useEffect(() => {
     if (selectedOrder) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      (window as any).__lenis?.stop();
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      (window as any).__lenis?.start();
     }
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      (window as any).__lenis?.start();
     };
   }, [selectedOrder]);
 
@@ -89,7 +96,7 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
   const [prodFormPrice, setProdFormPrice] = useState(0);
   const [prodFormStock, setProdFormStock] = useState(0);
   const [prodFormUnit, setProdFormUnit] = useState('10mg');
-  const [prodFormCat, setProdFormCat] = useState('Peptides');
+  const [prodFormCat, setProdFormCat] = useState('Healing');
   const [prodFormDesc, setProdFormDesc] = useState('');
   const [prodFormImage, setProdFormImage] = useState('');
   const [prodFormAbbr, setProdFormAbbr] = useState('');
@@ -313,7 +320,7 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
     setProdFormPrice(0);
     setProdFormStock(0);
     setProdFormUnit('10mg');
-    setProdFormCat('Peptides');
+    setProdFormCat('Healing');
     setProdFormDesc('');
     setProdFormImage('');
     setProdFormAbbr('');
@@ -411,7 +418,7 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
   // Dynamic Sales Curves & Aggregations
   // Finished orders count as Shipped or Confirmed or Completed
   const completedOrders = useMemo(() => {
-    return orders.filter(o => o.status === 'Shipped' || (o.status as string) === 'Completed');
+    return orders.filter(o => o.status === 'Shipped' || o.status === 'Delivered' || o.status === 'Completed');
   }, [orders]);
 
   const totalSalesSum = useMemo(() => {
@@ -726,6 +733,8 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
                   <option value="Pending">Pending</option>
                   <option value="Confirmed">Confirmed</option>
                   <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Completed">Completed</option>
                 </select>
 
                 <div className="relative w-full md:w-64">
@@ -780,12 +789,14 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
                           {formatTimestamp(o.created_at)}
                         </td>
                         <td className="p-4 font-mono font-semibold text-white">
-                          ₱{o.total_amount.toLocaleString()}
+                          ₱{(o.total_amount ?? o.totalAmount ?? 0).toLocaleString()}
                         </td>
                         <td className="p-4">
                           <span className={`px-2.5 py-0.5 rounded border text-[9px] font-mono ${
                             o.status === 'Pending' ? 'text-warning bg-warning/10 border-warning/20' :
                             o.status === 'Confirmed' ? 'text-accent bg-accent/10 border-accent/20' :
+                            o.status === 'Shipped' ? 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' :
+                            o.status === 'Delivered' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' :
                             'text-success bg-success/10 border-success/20'
                           }`}>
                             {o.status}
@@ -902,10 +913,10 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
                       onChange={e => setProdFormCat(e.target.value)}
                       className="w-full bg-bg-deep border border-border rounded-lg px-3 py-2.5 text-xs text-white focus:border-accent focus:outline-none"
                     >
-                      <option value="Peptides">Peptides</option>
-                      <option value="Lab Essentials">Lab Essentials</option>
-                      <option value="Supplies">Supplies</option>
-                      <option value="Pens">Pens</option>
+                      <option value="Healing">Healing</option>
+                      <option value="Metabolic">Metabolic</option>
+                      <option value="Wellness">Wellness</option>
+                      <option value="Cosmetics">Cosmetics</option>
                     </select>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -1005,7 +1016,12 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
                           <td className="p-4 pl-6 font-mono font-bold">{p.id}</td>
                           <td className="p-4">
                             <div className="flex items-center space-x-3">
-                              {p.image && <img src={p.image} className="w-8 h-8 rounded border border-border object-cover" />}
+                              <ProductImage 
+                                productId={Number(p.id)}
+                                productName={p.name}
+                                imageUrl={p.image || ''}
+                                className="w-8 h-8 rounded overflow-hidden shrink-0 border border-border flex items-center justify-center bg-bg-deep"
+                              />
                               <div>
                                 <p className="font-bold text-white">{p.name}</p>
                                 <p className="text-[9px] font-mono text-text-muted mt-0.5">{p.abbr || 'N/A'} • {p.unit || p.concentration}</p>
@@ -1164,7 +1180,7 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
             onClick={() => setSelectedOrder(null)}
           />
 
-          <div className="relative w-full max-w-xl bg-bg-elevated border border-border rounded-2xl flex flex-col shadow-2xl overflow-hidden max-h-[90vh] z-[102] text-left">
+          <div data-lenis-prevent className="relative w-full max-w-xl bg-bg-elevated border border-border rounded-2xl flex flex-col shadow-2xl overflow-hidden max-h-[90vh] z-[102] text-left">
             
             {/* Drawer Header */}
             <div className="p-6 border-b border-border flex items-center justify-between bg-bg-card">
@@ -1229,23 +1245,23 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
                     <div key={index} className="p-3 flex justify-between items-center text-xs">
                       <div>
                         <p className="font-bold text-white">{item.product_name}</p>
-                        <p className="text-[9px] font-mono text-text-muted mt-0.5">₱{item.price.toLocaleString()} x {item.quantity}v</p>
+                        <p className="text-[9px] font-mono text-text-muted mt-0.5">₱{(item.price ?? 0).toLocaleString()} x {item.quantity}v</p>
                       </div>
-                      <span className="font-mono font-semibold text-white">₱{item.subtotal.toLocaleString()}</span>
+                      <span className="font-mono font-semibold text-white">₱{(item.subtotal ?? 0).toLocaleString()}</span>
                     </div>
                   ))}
                   <div className="p-3 bg-bg-card/45 font-mono text-[11px] space-y-1">
                     <div className="flex justify-between text-text-muted">
                       <span>Compounds Subtotal</span>
-                      <span>₱{selectedOrder.subtotal.toLocaleString()}</span>
+                      <span>₱{(selectedOrder.subtotal ?? selectedOrder.subtotalAmount ?? 0).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-text-muted">
                       <span>Delivery surcharge</span>
-                      <span>₱{selectedOrder.shipping_fee.toLocaleString()}</span>
+                      <span>₱{(selectedOrder.shipping_fee ?? selectedOrder.shippingFee ?? 0).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between font-bold text-xs text-white pt-1.5 border-t border-border/30">
                       <span className="text-accent font-display">Grand Settlement Amount</span>
-                      <span>₱{selectedOrder.total_amount.toLocaleString()}</span>
+                      <span>₱{(selectedOrder.total_amount ?? selectedOrder.totalAmount ?? 0).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -1299,7 +1315,9 @@ export default function AdminDashboard({ user, toast }: AdminDashboardProps) {
                 >
                   <option value="Pending">⚠️ Set Pending Verification</option>
                   <option value="Confirmed">🧬 Set Confirmed Preparing</option>
-                  <option value="Shipped">🚚 Set Shipped Out (Deliveries)</option>
+                  <option value="Shipped">🚚 Set Shipped Out (In Transit)</option>
+                  <option value="Delivered">📦 Set Delivered (Received)</option>
+                  <option value="Completed">🎉 Set Completed (Finalized)</option>
                 </select>
               </div>
 

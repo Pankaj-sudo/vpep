@@ -515,3 +515,9 @@ html.lenis body {
   .btn-ripple::after { display: none; }
 }
 
+/* Optimize GPU compositing layers for 120Hz/120fps display devices */
+.lenis-smooth {
+  will-change: transform;
+}
+
+

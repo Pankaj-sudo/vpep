@@ -74,7 +74,7 @@ export interface OrderItem {
   subtotal: number;
 }
 
-export type OrderStatus = 'Pending' | 'Confirmed' | 'Shipped';
+export type OrderStatus = 'Pending' | 'Confirmed' | 'Shipped' | 'Delivered' | 'Completed';
 
 export interface Order {
   order_id: string;

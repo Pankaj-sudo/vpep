@@ -16,11 +16,12 @@ function initLenis() {
     import('lenis').then(({ default: Lenis }) => {
       try {
         const lenis = new Lenis({
-          lerp: 0.1,            // Buttery smooth momentum (0.1 is standard)
-          syncTouch: false,     // Disabled to let mobile use native high-performance touch scrolling
+          duration: 1.2,        // Time-based animation duration (fully decoupled from screen refresh rates)
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential decay curve for organic physics
+          syncTouch: false,     // Disabled to let mobile/touch use native hardware-accelerated 120Hz scrolling
         });
 
-        // Drive Lenis manually via requestAnimationFrame loop (guarantees cross-browser 60FPS)
+        // Drive Lenis manually via requestAnimationFrame loop (guarantees device-native 60Hz/120Hz refresh alignment)
         function raf(time: number) {
           lenis.raf(time);
           requestAnimationFrame(raf);

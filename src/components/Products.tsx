@@ -250,7 +250,7 @@ export default function Products({
       {/* Product Cards Grid — shown for all categories except Peptide Calculator */}
       {selectedCategory !== 'Peptide Calculator' && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8 min-h-[400px]">
             <AnimatePresence mode="popLayout">
               {filteredProducts.map((p, idx) => {
                 return (
@@ -272,54 +272,54 @@ export default function Products({
                       boxShadow: '0 20px 48px rgba(0,127,158,0.18)',
                       transition: { type: 'spring', stiffness: 300, damping: 22 }
                     }}
-                    className="card-glass group flex flex-col justify-between rounded-[18px] p-7"
+                    className="card-glass group flex flex-col justify-between rounded-xl sm:rounded-[18px] p-3 sm:p-7"
                   >
                     <div>
 
                       {/* Batch badge + verified badge row */}
-                      <div className="flex items-center justify-between mb-5">
-                        <span className="text-[9px] font-mono uppercase px-2.5 py-1 rounded border border-border text-text-muted bg-bg-elevated tracking-widest">
-                          {p.category || p.cat || 'Wellness'} batch
+                      <div className="flex items-center justify-between mb-3 sm:mb-5">
+                        <span className="text-[7.5px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded border border-border text-text-muted bg-bg-elevated tracking-wider sm:tracking-widest">
+                          {p.category || p.cat || 'Wellness'}
                         </span>
-                        <span className="badge-lab">
-                          <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
-                          Verified
+                        <span className="badge-lab text-[8px] sm:text-xs">
+                          <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                          <span className="hidden xs:inline">Verified</span>
                         </span>
                       </div>
 
-                      {/* Main Card Content: Horizontal Split */}
-                      <div className="flex items-start gap-6 mb-6">
+                      {/* Main Card Content: Stacked on Mobile, Horizontal on Desktop */}
+                      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-6 mb-4 sm:mb-6">
                         
-                        {/* Left: Taller & Larger Vial Image */}
-                        <div className="shrink-0">
+                        {/* Left: Product Image */}
+                        <div className="shrink-0 w-full sm:w-auto flex justify-center">
                           <ProductImage 
                             productId={Number(p.id)}
                             productName={p.name}
                             imageUrl={p.image || ''}
-                            className="h-44 w-28 relative overflow-hidden rounded-xl border border-border bg-bg-elevated flex items-center justify-center p-2 group-hover:border-accent/40 transition-all shadow-sm"
+                            className="h-28 w-20 sm:h-44 sm:w-28 relative overflow-hidden rounded-lg sm:rounded-xl border border-border bg-bg-elevated flex items-center justify-center p-1.5 sm:p-2 group-hover:border-accent/40 transition-all shadow-sm"
                             imgClassName="w-full h-full object-cover"
                           />
                         </div>
 
-                        {/* Right: Left-Aligned Text Details */}
-                        <div className="flex-1 text-left min-h-[176px] flex flex-col justify-between">
+                        {/* Right: Text Details */}
+                        <div className="w-full sm:flex-1 text-center sm:text-left min-h-0 sm:min-h-[176px] flex flex-col justify-between">
                           <div>
-                            <h3 className="font-display font-cormorant font-bold text-text-primary text-2xl group-hover:text-accent tracking-tight transition-all leading-tight">
+                            <h3 className="font-display font-cormorant font-bold text-text-primary text-base sm:text-2xl group-hover:text-accent tracking-tight transition-all leading-tight">
                               {p.name}
                             </h3>
-                            <p className="text-[12.5px] text-text-muted leading-[1.65] font-sans mt-2.5 line-clamp-4">
+                            <p className="text-[10px] sm:text-[12.5px] text-text-muted leading-relaxed sm:leading-[1.65] font-sans mt-1.5 sm:mt-2.5 line-clamp-2 sm:line-clamp-4">
                               {p.description || p.desc || ''}
                             </p>
                             {/* Concentration badge */}
                             {(p.concentration || p.unit) && (
-                              <span className="inline-block mt-2 badge-lab-blue">{p.concentration || p.unit}</span>
+                              <span className="inline-block mt-1 sm:mt-2 px-1.5 py-0.5 text-[8px] sm:text-[10px] badge-lab-blue">{p.concentration || p.unit}</span>
                             )}
                           </div>
 
                           {/* Pricing Row */}
-                          <div className="flex items-baseline justify-between mt-4 pt-3 border-t border-border/50">
-                            <span className="text-[8.5px] font-mono text-text-muted uppercase tracking-wider">Research grade price</span>
-                            <span className="font-display font-cormorant text-2xl font-bold text-accent tracking-tight">
+                          <div className="flex flex-col xs:flex-row xs:items-baseline justify-between mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-border/50 gap-0.5">
+                            <span className="text-[7.5px] sm:text-[8.5px] font-mono text-text-muted uppercase tracking-wider">Price</span>
+                            <span className="font-display font-cormorant text-base sm:text-2xl font-bold text-accent tracking-tight">
                               ₱{p.price.toLocaleString()}
                             </span>
                           </div>
@@ -330,19 +330,19 @@ export default function Products({
                     </div>
 
                     {/* Full-Width Add to Cart Button */}
-                    <div className="pt-2">
+                    <div className="pt-1 sm:pt-2">
                       <motion.button
                         onClick={() => onOpenProduct(p)}
                         onMouseMove={handleMouseMove}
-                        className="btn-ripple btn-life-green btn-spotlight w-full py-3.5 px-4 text-xs font-bold rounded-xl text-white
+                        className="btn-ripple btn-life-green btn-spotlight w-full py-2 sm:py-3.5 px-2 sm:px-4 text-[9px] sm:text-xs font-bold rounded-lg sm:rounded-xl text-white
                           uppercase tracking-wider
-                          flex items-center justify-center gap-2"
+                          flex items-center justify-center gap-1.5 sm:gap-2"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.96 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                        View & Add to Cart
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        <span>View</span>
                       </motion.button>
                     </div>
                   </motion.div>
