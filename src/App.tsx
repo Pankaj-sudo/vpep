@@ -173,6 +173,27 @@ export default function App() {
   const [quizSelectedGoal, setQuizSelectedGoal] = useState<string | null>(null);
   const [quizSelectedPurity, setQuizSelectedPurity] = useState<string | null>(null);
 
+  // Centralized body scroll lock for all modal overlays to prevent background scrolling
+  useEffect(() => {
+    const isAnyOverlayOpen = !!(selectedProduct || cartOpen || checkoutOpen || settingsOpen || wishlistOpen || quizOpen);
+    const lenis = (window as any).__lenis;
+    
+    if (isAnyOverlayOpen) {
+      lenis?.stop();
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      lenis?.start();
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      lenis?.start();
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [selectedProduct, cartOpen, checkoutOpen, settingsOpen, wishlistOpen, quizOpen]);
+
   // 1. Listen for Firebase Auth alterations and handle Redirect results
   useEffect(() => {
     // Handle redirect result (mobile sign-in fallback) — safely waits for auth readiness
@@ -754,7 +775,10 @@ export default function App() {
       {settingsOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg-deep/80 backdrop-blur-md">
           <div className="absolute inset-0 cursor-pointer" onClick={() => setSettingsOpen(false)} />
-          <div className="relative w-full max-w-md rounded-2xl border border-border bg-bg-card p-6 shadow-2xl z-10 text-left">
+          <div 
+            className="relative w-full max-w-md rounded-2xl border border-border bg-bg-card p-6 shadow-2xl z-10 text-left"
+            data-lenis-prevent
+          >
             <div className="flex items-center justify-between pb-3 border-b border-border mb-4">
               <h4 className="font-display font-extrabold text-white text-base flex items-center space-x-2">
                 <SlidersHorizontal className="h-5 w-5 text-accent" />
@@ -856,9 +880,13 @@ export default function App() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg-deep/80 backdrop-blur-md">
           <div className="absolute inset-0 cursor-pointer" onClick={() => setSelectedProduct(null)} />
           
-          <div className="relative w-full max-w-4xl rounded-3xl border border-border bg-bg-card p-0 shadow-2xl z-10 overflow-hidden flex flex-col md:flex-row text-left max-h-[90vh] overflow-y-auto">
-            {/* Left Graphics aspect */}
-            <div className="w-full md:w-1/2 bg-bg-deep relative min-h-[300px] flex items-center justify-center border-r border-border">
+          <div 
+            className="relative w-full max-w-4xl rounded-3xl border border-border bg-bg-card p-0 shadow-2xl z-10 flex flex-col md:flex-row text-left max-h-[90vh] overflow-y-auto overflow-x-hidden"
+            data-lenis-prevent
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {/* Left Graphics aspect — optimized height for mobile to save space */}
+            <div className="w-full md:w-1/2 bg-bg-deep relative h-[25vh] md:h-auto md:min-h-[300px] flex items-center justify-center border-b md:border-b-0 md:border-r border-border overflow-hidden">
               <ProductImage 
                 productId={selectedProduct.id}
                 productName={selectedProduct.name}
@@ -978,7 +1006,10 @@ export default function App() {
       {wishlistOpen && (
         <div className="fixed inset-0 z-50 flex justify-end bg-bg-deep/80 backdrop-blur-md">
           <div className="absolute inset-0 cursor-pointer" onClick={() => setWishlistOpen(false)} />
-          <div className="relative w-full max-w-md bg-bg-card border-l border-border flex flex-col justify-between shadow-2xl z-10 text-left">
+          <div 
+            className="relative w-full max-w-md bg-bg-card border-l border-border flex flex-col justify-between shadow-2xl z-10 text-left"
+            data-lenis-prevent
+          >
             <div>
               {/* Header */}
               <div className="p-6 border-b border-border bg-gradient-to-r from-accent/5 to-transparent flex justify-between items-center">
@@ -1063,7 +1094,10 @@ export default function App() {
       {quizOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg-deep/85 backdrop-blur-md">
           <div className="absolute inset-0 cursor-pointer" onClick={() => setQuizOpen(false)} />
-          <div className="relative w-full max-w-md rounded-2xl border border-border bg-bg-card p-6 shadow-2xl z-10 text-left">
+          <div 
+            className="relative w-full max-w-md rounded-2xl border border-border bg-bg-card p-6 shadow-2xl z-10 text-left"
+            data-lenis-prevent
+          >
             
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-border">

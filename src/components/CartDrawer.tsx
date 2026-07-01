@@ -38,7 +38,10 @@ export default function CartDrawer({
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-bg-elevated border-l border-border text-text-primary flex flex-col shadow-2xl relative">
+        <div 
+          className="w-screen max-w-md bg-bg-elevated border-l border-border text-text-primary flex flex-col shadow-2xl relative"
+          data-lenis-prevent
+        >
           
           {/* Header */}
           <div className="p-6 border-b border-border flex items-center justify-between">

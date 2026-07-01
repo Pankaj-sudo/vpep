@@ -294,6 +294,7 @@ export default function CheckoutModal({
       <div 
         className="relative w-full max-w-xl rounded-2xl border border-border bg-bg-elevated shadow-2xl p-6 md:p-8 animate-scale-up max-h-[90vh] overflow-y-auto"
         id="checkout-modal-container"
+        data-lenis-prevent
       >
         {/* Progress header slider */}
         {step < 4 && (

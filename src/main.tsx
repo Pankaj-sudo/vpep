@@ -17,7 +17,7 @@ function initLenis() {
       try {
         const lenis = new Lenis({
           lerp: 0.1,            // Buttery smooth momentum (0.1 is standard)
-          syncTouch: true,      // Smooth scroll on touch devices (mobile optimized)
+          syncTouch: false,     // Disabled to let mobile use native high-performance touch scrolling
         });
 
         // Drive Lenis manually via requestAnimationFrame loop (guarantees cross-browser 60FPS)
