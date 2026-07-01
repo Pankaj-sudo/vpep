@@ -16,8 +16,7 @@ function initLenis() {
     import('lenis').then(({ default: Lenis }) => {
       try {
         const lenis = new Lenis({
-          duration: 1.2,        // Time-based animation duration (fully decoupled from screen refresh rates)
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential decay curve for organic physics
+          lerp: 0.15,            // Highly-responsive smooth scroll interpolation (extremely fluid on both 60Hz and 120Hz)
           syncTouch: false,     // Disabled to let mobile/touch use native hardware-accelerated 120Hz scrolling
         });
 
