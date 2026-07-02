@@ -14,7 +14,8 @@ service cloud.firestore {
 
     function isAdmin() {
       return (request.auth != null && (
-        request.auth.token.email.lower() == 'pankaj.ydv707@gmail.com'
+        request.auth.token.email.lower() == 'pankaj.ydv707@gmail.com' ||
+        request.auth.token.email.lower() == 'admin@vitapep.com'
       ));
     }
 
@@ -84,7 +85,7 @@ service cloud.firestore {
 
       // Admin-only updates for status changes
       allow update: if isAdmin() && (
-        incoming().status in ['Pending', 'Confirmed', 'Shipped'] &&
+        incoming().status in ['Pending', 'Confirmed', 'Shipped', 'Delivered', 'Completed'] &&
         incoming().updated_at == request.time &&
         incoming().order_id == existing().order_id &&
         incoming().customer_email == existing().customer_email &&

@@ -654,18 +654,24 @@ export default function App() {
             <Hero user={user} onShopClick={handleHeroShopScroll} onSignIn={handleGoogleSignIn} />
 
             {/* Interactive Shop area — Uniform grid for ALL categories */}
-            <div id="shop-grid-anchor" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 gap-8">
+            <div id="shop-grid-anchor" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+              {/* Ambient orbs behind shop grid */}
+              <div className="ambient-orb ambient-orb-primary absolute -top-24 -left-32 w-[400px] h-[400px] z-0" aria-hidden="true" />
+              <div className="ambient-orb ambient-orb-green absolute -bottom-24 -right-32 w-[350px] h-[350px] z-0" aria-hidden="true" />
+
+              <div className="grid grid-cols-1 gap-8 relative z-[1]">
                 
                 {/* Products Grid Column — always full width */}
                 <div className="w-full">
                   <AnimateIn delay={0.08} duration={0.65}>
                     <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                       <div className="text-left">
-                        <h3 className="font-display font-black text-white text-2xl sm:text-3xl uppercase tracking-tighter">
-                          Chemical Catalog
+                        <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tighter">
+                          <span className="text-shimmer">Chemical Catalog</span>
                         </h3>
-                        <p className="text-[11px] font-mono text-[#8896B3] mt-1.5 uppercase tracking-wider">
+                        {/* Animated glow accent divider */}
+                        <div className="mt-1.5 h-[1.5px] w-16 rounded-full bg-accent accent-line-glow" />
+                        <p className="text-[11px] font-mono text-[#8896B3] mt-2 uppercase tracking-wider">
                           Batch-validated peptide compounds with HPLC certification.
                         </p>
                       </div>

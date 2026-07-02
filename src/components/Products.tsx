@@ -258,21 +258,21 @@ export default function Products({
                     key={p.id} 
                     id={`product-card-${p.id}`}
                     layout="position"
-                    initial={{ opacity: 0, scale: 0.95, y: 24 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: 16 }}
+                    initial={{ opacity: 0, scale: 0.92, y: 24, filter: 'blur(6px)' }}
+                    animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, scale: 0.92, y: 16, filter: 'blur(4px)' }}
                     transition={{ 
-                      duration: 0.5,
-                      delay: (idx % 9) * 0.06, // stagger within visible page (max 9 cards)
+                      duration: 0.55,
+                      delay: (idx % 9) * 0.07,
                       ease: [0.16, 1, 0.3, 1]
                     }}
                     whileHover={{
-                      y: -8,
-                      scale: 1.018,
-                      boxShadow: '0 20px 48px rgba(0,127,158,0.18)',
-                      transition: { type: 'spring', stiffness: 300, damping: 22 }
+                      y: -10,
+                      scale: 1.022,
+                      boxShadow: '0 24px 56px rgba(0,127,158,0.20)',
+                      transition: { type: 'spring', stiffness: 280, damping: 20 }
                     }}
-                    className="card-glass group flex flex-col justify-between rounded-xl sm:rounded-[18px] p-3 sm:p-7"
+                    className="card-glass card-magnetic card-glow-border group flex flex-col justify-between rounded-xl sm:rounded-[18px] p-3 sm:p-7"
                   >
                     <div>
 

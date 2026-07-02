@@ -24,7 +24,6 @@ interface AnimateInProps {
   distance?: number;
   className?: string;
   once?: boolean;
-  as?: keyof JSX.IntrinsicElements;
 }
 
 const directionMap = {

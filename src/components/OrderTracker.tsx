@@ -120,8 +120,10 @@ export default function OrderTracker({ initialOrderId = '', toast }: OrderTracke
   // Define steps
   const steps: { key: OrderStatus; title: string; desc: string }[] = [
     { key: 'Pending', title: 'Order Registered', desc: 'Laboratory receipt pending GCash payment validation.' },
-    { key: 'Confirmed', title: 'Batch Confirmed', desc: 'Acertified biologist confirmed payment. Preparing peptide vial aliquots.' },
-    { key: 'Shipped', title: 'En Route', desc: 'Out for local dispatch via GrabExpress/Lalamove. Rider en route.' }
+    { key: 'Confirmed', title: 'Batch Confirmed', desc: 'A certified biologist confirmed payment. Preparing peptide vial aliquots.' },
+    { key: 'Shipped', title: 'En Route', desc: 'Out for local dispatch via GrabExpress/Lalamove. Rider en route.' },
+    { key: 'Delivered', title: 'Delivered', desc: 'The rider has delivered the package to the target coordinates.' },
+    { key: 'Completed', title: 'Research Concluded', desc: 'Order cycle fully closed. Reagent batch archived.' }
   ];
 
   const getStepStatus = (stepKey: OrderStatus) => {
@@ -130,7 +132,9 @@ export default function OrderTracker({ initialOrderId = '', toast }: OrderTracke
     const statusMap: Record<OrderStatus, number> = {
       'Pending': 1,
       'Confirmed': 2,
-      'Shipped': 3
+      'Shipped': 3,
+      'Delivered': 4,
+      'Completed': 5
     };
 
     const currentIdx = statusMap[orderData.status] || 1;

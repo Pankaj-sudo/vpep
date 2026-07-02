@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ArrowDown, ShieldCheck, Microscope, Dna } from 'lucide-react';
 import { motion, useInView } from 'motion/react';
 import { useMouseParallax } from '../hooks/useMouseParallax';
@@ -47,10 +47,10 @@ const heroRightVariants = {
 };
 
 const trustCardVariants = {
-  hidden:  { opacity: 0, y: 20 },
+  hidden:  { opacity: 0, y: 30, scale: 0.94, filter: 'blur(6px)' },
   visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.7 + i * 0.12 },
+    opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.75 + i * 0.15 },
   }),
 };
 
@@ -58,12 +58,32 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
   const [dosage, setDosage] = useState<number>(0.25);
   const [dialRotation, setDialRotation] = useState<number>(0);
   const [clickIndicator, setClickIndicator] = useState<boolean>(false);
+  const [typedText, setTypedText] = useState<string>('');
+  const [typingDone, setTypingDone] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
 
   // Mouse parallax for depth effect on vial/pen visuals
   const { x: mouseX, y: mouseY } = useMouseParallax();
+
+  // ── Typewriter effect for subheading ────────────────────────────────────
+  const TYPED_TEXT = 'Premium medical-grade compounds formulated for clinical efficacy and athletic optimization. Independently HPLC lab-verified showing ≥98.5% purity.';
+  useEffect(() => {
+    if (!isInView) return;
+    let i = 0;
+    setTypedText('');
+    setTypingDone(false);
+    const interval = setInterval(() => {
+      i++;
+      setTypedText(TYPED_TEXT.slice(0, i));
+      if (i >= TYPED_TEXT.length) {
+        clearInterval(interval);
+        setTypingDone(true);
+      }
+    }, 18); // ~18ms per char = fast but visible
+    return () => clearInterval(interval);
+  }, [isInView]);
 
   const handleSignIn = () => {
     onSignIn();
@@ -101,35 +121,41 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
       <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true">
         {/* Fade vignette */}
         <div className="absolute inset-0 bg-gradient-to-b from-bg-deep/40 via-transparent to-bg-deep" />
-        {/* Primary biomimetic blob — DNA blue, top-right */}
+        {/* Primary morphing orb — DNA blue, top-right */}
         <div
-          className="blob-breathe absolute"
+          className="orb-morph ambient-orb ambient-orb-blue absolute"
           style={{
             top: '8%', right: '12%',
             width: 520, height: 480,
-            background: 'radial-gradient(ellipse, rgba(14,165,233,0.10) 0%, rgba(14,165,233,0.04) 55%, transparent 80%)',
-            filter: 'blur(48px)',
           }}
         />
-        {/* Secondary biomimetic blob — life green, bottom-left */}
+        {/* Secondary morphing orb — life green, bottom-left */}
         <div
-          className="blob-breathe-alt absolute"
+          className="orb-morph-slow ambient-orb ambient-orb-green absolute"
           style={{
             bottom: '10%', left: '5%',
             width: 400, height: 360,
-            background: 'radial-gradient(ellipse, rgba(5,150,105,0.08) 0%, rgba(5,150,105,0.03) 55%, transparent 80%)',
-            filter: 'blur(56px)',
           }}
         />
-        {/* Accent micro-blob — warm teal, center */}
+        {/* Accent micro-orb — warm teal, center */}
         <div
-          className="blob-breathe absolute"
+          className="blob-breathe ambient-orb ambient-orb-primary absolute"
           style={{
             top: '40%', left: '30%',
             width: 280, height: 240,
-            background: 'radial-gradient(ellipse, rgba(0,127,158,0.06) 0%, transparent 70%)',
-            filter: 'blur(40px)',
             animationDelay: '3s',
+          }}
+        />
+        {/* Extra subtle accent orb — upper left */}
+        <div
+          className="orb-morph ambient-orb absolute"
+          style={{
+            top: '15%', left: '8%',
+            width: 200, height: 200,
+            background: 'radial-gradient(circle, rgba(0,127,158,0.12), transparent 70%)',
+            filter: 'blur(60px)',
+            opacity: 0.25,
+            animationDelay: '5s',
           }}
         />
       </div>
@@ -203,13 +229,13 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
               </span>
             </motion.h2>
 
-            {/* Clinical body explanation */}
+            {/* Clinical body explanation — typewriter effect */}
             <motion.p
               variants={heroItemVariants}
               className="mt-4 max-w-xl text-xs sm:text-sm text-text-muted leading-relaxed uppercase tracking-wider font-mono lg:mx-0 mx-auto"
             >
-              Premium medical-grade compounds formulated for clinical efficacy and athletic optimization. 
-              Independently HPLC lab-verified showing ≥98.5% purity.
+              {typedText}
+              {!typingDone && <span className="cursor-blink">|</span>}
             </motion.p>
 
             {/* Credibility micro-badges (ui-ux-pro-max: add trust signals, avoid poor credibility) */}
@@ -478,23 +504,26 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
 
           </motion.div>
 
-          {/* Trust indicators in glassmorphic cards */}
+          {/* Trust indicators in glassmorphic cards with magnetic spotlight + glow border */}
           <div className="lg:col-span-12 mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl text-left mx-auto lg:mx-0">
             {[
               {
                 icon: <ShieldCheck className="h-5 w-5 text-accent" />,
                 title: 'Guaranteed Purity',
                 desc: 'Independently HPLC validated batches showing ≥98.5% concentration.',
+                floatClass: 'badge-float',
               },
               {
                 icon: <Microscope className="h-5 w-5 text-accent" />,
                 title: 'Full Transparency',
                 desc: 'Public Certificate of Analysis (COA) results attached to each vial.',
+                floatClass: 'badge-float-slow',
               },
               {
                 icon: <Dna className="h-5 w-5 text-accent" />,
                 title: 'Rapid Dispatch',
                 desc: 'Same-day courier delivery via GrabExpress or Lalamove in Metro Manila.',
+                floatClass: 'badge-float-delayed',
               },
             ].map((card, i) => (
               <motion.div
@@ -503,17 +532,35 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
                 variants={trustCardVariants}
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
-                whileHover={{ y: -4, transition: { type: 'spring', stiffness: 300 } }}
-                className="p-6 rounded-2xl border border-border bg-white/70 backdrop-blur-md shadow-sm hover:border-accent/30 hover:shadow-[0_8px_30px_rgba(0,127,158,0.08)] transition-all duration-300"
+                whileHover={{ y: -6, scale: 1.02, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                className={`card-magnetic card-glow-border ${card.floatClass} p-6 rounded-2xl border border-border bg-white/70 backdrop-blur-md shadow-sm hover:border-accent/30 hover:shadow-[0_12px_40px_rgba(0,127,158,0.12)] transition-all duration-500 cursor-default`}
               >
-                <div className="flex items-center space-x-2.5 mb-3">
-                  {card.icon}
+                <div className="flex items-center space-x-2.5 mb-3 relative z-[2]">
+                  <motion.div
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 + i }}
+                  >
+                    {card.icon}
+                  </motion.div>
                   <h4 className="font-display font-bold text-xs uppercase tracking-widest text-text-primary">{card.title}</h4>
                 </div>
-                <p className="text-xs text-text-muted leading-relaxed">{card.desc}</p>
+                <p className="text-xs text-text-muted leading-relaxed relative z-[2]">{card.desc}</p>
               </motion.div>
             ))}
           </div>
+
+          {/* Scroll-down bounce indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isInView ? 1 : 0 }}
+            transition={{ delay: 2, duration: 0.8 }}
+            className="lg:col-span-12 flex justify-center mt-8"
+          >
+            <div className="scroll-bounce flex flex-col items-center gap-1.5 text-text-muted/50 cursor-pointer" onClick={onShopClick}>
+              <span className="text-[9px] font-mono uppercase tracking-widest">Explore Catalog</span>
+              <ArrowDown className="h-4 w-4" />
+            </div>
+          </motion.div>
 
         </div>
       </div>

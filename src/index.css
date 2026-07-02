@@ -120,8 +120,10 @@ body::before {
   z-index: 1;
 }
 
-.btn-spotlight:hover::before {
-  opacity: 1;
+@media (hover: hover) {
+  .btn-spotlight:hover::before {
+    opacity: 1;
+  }
 }
 
 .btn-spotlight > * {
@@ -514,5 +516,395 @@ html.lenis body {
   .card-premium:hover { transform: none; }
   .btn-ripple::after { display: none; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* UI-UX-PRO-MAX PREMIUM ANIMATION UPGRADES                                    */
+/* Organic, biomimetic, luxury-grade motion system                             */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Animated gradient text shimmer (heading effect) ────────────────────── */
+@keyframes text-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    #00C4EF 30%,
+    var(--color-life-green) 50%,
+    #00C4EF 70%,
+    var(--color-accent) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 4s linear infinite;
+}
+
+/* ── Animated gradient border glow (card hover enhancement) ─────────────── */
+@keyframes border-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.card-glow-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.card-glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(0, 127, 158, 0.25) 20%,
+    rgba(14, 165, 233, 0.3) 40%,
+    rgba(5, 150, 105, 0.2) 60%,
+    transparent 80%
+  );
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  animation: border-spin 4s linear infinite;
+  animation-play-state: paused;
+}
+
+@media (hover: hover) {
+  .card-glow-border:hover::before {
+    opacity: 0.45;
+    animation-play-state: running;
+  }
+}
+
+/* ── Morphing floating orb background effect ─────────────────────────────── */
+@keyframes orb-morph {
+  0%   { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; transform: rotate(0deg) scale(1); }
+  25%  { border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; transform: rotate(90deg) scale(1.05); }
+  50%  { border-radius: 30% 70% 70% 30% / 30% 40% 60% 70%; transform: rotate(180deg) scale(0.97); }
+  75%  { border-radius: 70% 30% 40% 60% / 70% 50% 50% 30%; transform: rotate(270deg) scale(1.03); }
+  100% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; transform: rotate(360deg) scale(1); }
+}
+
+.orb-morph {
+  animation: orb-morph 12s ease-in-out infinite;
+  will-change: transform, border-radius;
+}
+
+.orb-morph-slow {
+  animation: orb-morph 18s ease-in-out infinite reverse;
+  will-change: transform, border-radius;
+}
+
+/* ── Magnetic spotlight follow on card hover ─────────────────────────────── */
+.card-magnetic {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+}
+
+.card-magnetic::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 180px at var(--mx) var(--my),
+    rgba(0, 196, 239, 0.08) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+@media (hover: hover) {
+  .card-magnetic:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ── Cursor glow trail (desktop only) ───────────────────────────────────── */
+#cursor-glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 127, 158, 0.06) 0%,
+    rgba(14, 165, 233, 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  mix-blend-mode: multiply;
+}
+
+/* ── Number ticker counter animation ─────────────────────────────────────── */
+@keyframes count-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.counter-digit {
+  display: inline-block;
+  overflow: hidden;
+  animation: count-up 0.6s var(--ease-out-expo) forwards;
+}
+
+/* ── Scan line reveal text effect ────────────────────────────────────────── */
+@keyframes scan-reveal {
+  0%   { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+.scan-reveal {
+  animation: scan-reveal 0.9s var(--ease-out-expo) forwards;
+}
+
+/* ── Section gradient wipe-in divider ────────────────────────────────────── */
+@keyframes wipe-in-right {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+.divider-wipe {
+  animation: wipe-in-right 0.8s var(--ease-out-expo) forwards;
+}
+
+/* ── Floating badge pulse (trust signals) ────────────────────────────────── */
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50%       { transform: translateY(-6px) rotate(1deg); }
+}
+
+.badge-float {
+  animation: badge-float 3.5s ease-in-out infinite;
+}
+
+.badge-float-delayed {
+  animation: badge-float 4s ease-in-out infinite 1.2s;
+}
+
+.badge-float-slow {
+  animation: badge-float 5s ease-in-out infinite 0.6s;
+}
+
+/* ── Stagger fade-scale entrance (for grid items) ────────────────────────── */
+@keyframes fade-scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.fade-scale-in {
+  animation: fade-scale-up 0.65s var(--ease-out-expo) both;
+}
+
+/* ── Shimmer loading pulse (enhanced) ────────────────────────────────────── */
+@keyframes shimmer-sweep {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.shimmer-sweep {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  background-size: 400px 100%;
+  animation: shimmer-sweep 1.5s ease-in-out infinite;
+}
+
+/* ── Line drawing SVG animation ──────────────────────────────────────────── */
+.svg-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: svg-draw-in 2s var(--ease-out-expo) forwards;
+}
+
+@keyframes svg-draw-in {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ── Gradient blob section separator ─────────────────────────────────────── */
+.section-blob-sep {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-blob-sep::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 127, 158, 0.05) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: breathe 10s ease-in-out infinite;
+}
+
+/* ── Typing cursor blink ──────────────────────────────────────────────────── */
+@keyframes cursor-blink {
+  0%, 50%  { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+  color: var(--color-accent);
+  font-weight: 100;
+  margin-left: 1px;
+}
+
+/* ── Staggered letter drop animation ────────────────────────────────────── */
+@keyframes letter-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) rotateX(-45deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+.letter-drop span {
+  display: inline-block;
+  animation: letter-drop 0.5s var(--ease-spring) both;
+}
+
+/* ── Tilt depth effect on cards via CSS transform ───────────────────────── */
+.card-tilt {
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: transform 0.4s var(--ease-out-quart);
+}
+
+@media (hover: hover) {
+  .card-tilt:hover {
+    transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateZ(8px);
+  }
+}
+
+/* ── Ambient section glow orbs ───────────────────────────────────────────── */
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.35;
+  will-change: transform, opacity;
+}
+
+.ambient-orb-primary {
+  background: radial-gradient(circle, rgba(0, 127, 158, 0.4), transparent 70%);
+  animation: breathe 8s ease-in-out infinite;
+}
+
+.ambient-orb-green {
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.35), transparent 70%);
+  animation: breathe-reverse 11s ease-in-out infinite;
+}
+
+.ambient-orb-blue {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.3), transparent 70%);
+  animation: breathe 14s ease-in-out infinite 2s;
+}
+
+/* ── Mobile viewport performance overrides ────────────────────────────────── */
+@media (max-width: 767px) {
+  .ambient-orb {
+    display: none !important;
+    animation: none !important;
+  }
+  .orb-morph, .orb-morph-slow, .blob-breathe, .blob-breathe-alt, .section-blob-sep::before {
+    animation: none !important;
+  }
+  .hero-particle {
+    display: none !important;
+  }
+  .badge-float, .badge-float-delayed, .badge-float-slow {
+    animation: none !important;
+  }
+}
+
+/* ── Glowing accent line ─────────────────────────────────────────────────── */
+@keyframes accent-line-glow {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(0, 127, 158, 0.4); opacity: 0.7; }
+  50%       { box-shadow: 0 0 16px 4px rgba(0, 127, 158, 0.8); opacity: 1; }
+}
+
+.accent-line-glow {
+  animation: accent-line-glow 2.5s ease-in-out infinite;
+}
+
+/* ── Product card entrance stagger ──────────────────────────────────────── */
+.product-card-enter {
+  animation: fade-scale-up 0.55s var(--ease-out-expo) both;
+}
+
+.product-card-enter:nth-child(1) { animation-delay: 0.05s; }
+.product-card-enter:nth-child(2) { animation-delay: 0.12s; }
+.product-card-enter:nth-child(3) { animation-delay: 0.19s; }
+.product-card-enter:nth-child(4) { animation-delay: 0.26s; }
+.product-card-enter:nth-child(5) { animation-delay: 0.33s; }
+.product-card-enter:nth-child(6) { animation-delay: 0.40s; }
+
+/* ── Floating scroll indicator ───────────────────────────────────────────── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%       { transform: translateY(8px); opacity: 1; }
+}
+
+.scroll-bounce {
+  animation: scroll-bounce 1.8s ease-in-out infinite;
+}
+
+/* ── Page entrance fade-up (view transitions) ────────────────────────────── */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.page-enter {
+  animation: page-enter 0.45s var(--ease-out-expo) both;
+}
+
 
 

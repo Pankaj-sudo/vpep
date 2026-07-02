@@ -66,7 +66,8 @@ export const DELIVERY_FEES = {
 };
 
 export const ADMIN_EMAILS = [
-  "pankaj.ydv707@gmail.com" // Main Admin whitelisted automatically so developer can test instantly
+  "pankaj.ydv707@gmail.com",
+  "admin@vitapep.com"
 ];
 
 export const VIBER_PHONE = "09761831910";
