@@ -30,60 +30,37 @@ const PARTICLES = [
   { left: '42%', top: '92%', duration: '12s', delay: '2.8s'  },
 ];
 
-// ─── Animation variants ────────────────────────────────────────────────────────
+// ─── Animation variants (simplified to static/instant states for smooth scrolling) ───
 const heroContainerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
+  visible: {},
 };
 
 const heroItemVariants = {
-  hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0,  transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } },
+  hidden:  {},
+  visible: {},
 };
 
 const heroRightVariants = {
-  hidden:  { opacity: 0, x: 32, scale: 0.96 },
-  visible: { opacity: 1, x: 0,  scale: 1,    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.28 } },
+  hidden:  {},
+  visible: {},
 };
 
 const trustCardVariants = {
-  hidden:  { opacity: 0, y: 30, scale: 0.94, filter: 'blur(6px)' },
-  visible: (i: number) => ({
-    opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.75 + i * 0.15 },
-  }),
+  hidden:  {},
+  visible: () => ({}),
 };
 
 export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
   const [dosage, setDosage] = useState<number>(0.25);
   const [dialRotation, setDialRotation] = useState<number>(0);
   const [clickIndicator, setClickIndicator] = useState<boolean>(false);
-  const [typedText, setTypedText] = useState<string>('');
-  const [typingDone, setTypingDone] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
 
   // Mouse parallax for depth effect on vial/pen visuals
   const { x: mouseX, y: mouseY } = useMouseParallax();
-
-  // ── Typewriter effect for subheading ────────────────────────────────────
-  const TYPED_TEXT = 'Premium medical-grade compounds formulated for clinical efficacy and athletic optimization. Independently HPLC lab-verified showing ≥98.5% purity.';
-  useEffect(() => {
-    if (!isInView) return;
-    let i = 0;
-    setTypedText('');
-    setTypingDone(false);
-    const interval = setInterval(() => {
-      i++;
-      setTypedText(TYPED_TEXT.slice(0, i));
-      if (i >= TYPED_TEXT.length) {
-        clearInterval(interval);
-        setTypingDone(true);
-      }
-    }, 18); // ~18ms per char = fast but visible
-    return () => clearInterval(interval);
-  }, [isInView]);
 
   const handleSignIn = () => {
     onSignIn();
@@ -229,13 +206,12 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
               </span>
             </motion.h2>
 
-            {/* Clinical body explanation — typewriter effect */}
+            {/* Clinical body explanation */}
             <motion.p
               variants={heroItemVariants}
               className="mt-4 max-w-xl text-xs sm:text-sm text-text-muted leading-relaxed uppercase tracking-wider font-mono lg:mx-0 mx-auto"
             >
-              {typedText}
-              {!typingDone && <span className="cursor-blink">|</span>}
+              Premium medical-grade compounds formulated for clinical efficacy and athletic optimization. Independently HPLC lab-verified showing ≥98.5% purity.
             </motion.p>
 
             {/* Credibility micro-badges (ui-ux-pro-max: add trust signals, avoid poor credibility) */}
@@ -526,26 +502,16 @@ export default function Hero({ user, onShopClick, onSignIn }: HeroProps) {
                 floatClass: 'badge-float-delayed',
               },
             ].map((card, i) => (
-              <motion.div
+              <div
                 key={i}
-                custom={i}
-                variants={trustCardVariants}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-                whileHover={{ y: -6, scale: 1.02, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                className={`card-magnetic card-glow-border ${card.floatClass} p-6 rounded-2xl border border-border bg-white/70 backdrop-blur-md shadow-sm hover:border-accent/30 hover:shadow-[0_12px_40px_rgba(0,127,158,0.12)] transition-all duration-500 cursor-default`}
+                className="p-6 rounded-2xl border border-border bg-white/70 backdrop-blur-md shadow-sm hover:border-accent/15 hover:shadow-md transition-all duration-300 cursor-default"
               >
-                <div className="flex items-center space-x-2.5 mb-3 relative z-[2]">
-                  <motion.div
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 + i }}
-                  >
-                    {card.icon}
-                  </motion.div>
+                <div className="flex items-center space-x-2.5 mb-3">
+                  {card.icon}
                   <h4 className="font-display font-bold text-xs uppercase tracking-widest text-text-primary">{card.title}</h4>
                 </div>
-                <p className="text-xs text-text-muted leading-relaxed relative z-[2]">{card.desc}</p>
-              </motion.div>
+                <p className="text-xs text-text-muted leading-relaxed">{card.desc}</p>
+              </div>
             ))}
           </div>
 

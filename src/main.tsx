@@ -16,7 +16,12 @@ function initLenis() {
     import('lenis').then(({ default: Lenis }) => {
       try {
         const lenis = new Lenis({
-          lerp: 0.15,            // Highly-responsive smooth scroll interpolation (extremely fluid on both 60Hz and 120Hz)
+          duration: 1.2,        // Momentum duration (silky momentum)
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Premium exponential easing
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 1.1,  // Enhanced scroll response
           syncTouch: false,     // Disabled to let mobile/touch use native hardware-accelerated 120Hz scrolling
         });
 
@@ -40,78 +45,7 @@ function initLenis() {
   }
 }
 
-// ─── Cursor Glow Trail (Desktop Only) ─────────────────────────────────────
-// A smooth magnetic orb that follows the cursor with lerp interpolation.
-// Only activates on non-touch, pointer-capable devices.
-function initCursorGlow() {
-  try {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isTouch = window.matchMedia('(hover: none)').matches;
-    if (prefersReduced || isTouch) return;
-
-    const glow = document.createElement('div');
-    glow.id = 'cursor-glow';
-    document.body.appendChild(glow);
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let glowX = mouseX;
-    let glowY = mouseY;
-    let rafId: number;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    }, { passive: true });
-
-    function animateGlow() {
-      // Smooth lerp interpolation for the orb (0.08 = very silky lag)
-      glowX += (mouseX - glowX) * 0.08;
-      glowY += (mouseY - glowY) * 0.08;
-      glow.style.left = `${glowX}px`;
-      glow.style.top  = `${glowY}px`;
-      rafId = requestAnimationFrame(animateGlow);
-    }
-
-    animateGlow();
-
-    // Clean up if ever needed
-    (window as any).__cleanupCursorGlow = () => {
-      cancelAnimationFrame(rafId);
-      glow.remove();
-    };
-  } catch (err) {
-    // Cursor glow is purely cosmetic — fail silently
-  }
-}
-
-// ─── Card Magnetic Spotlight (updates CSS vars on mousemove) ──────────────
-// For .card-magnetic elements, tracks cursor position so the spotlight
-// follows the mouse within each card independently.
-function initCardMagnetic() {
-  try {
-    document.addEventListener('mousemove', (e) => {
-      const cards = document.querySelectorAll<HTMLElement>('.card-magnetic');
-      cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mx', `${x}px`);
-        card.style.setProperty('--my', `${y}px`);
-      });
-    }, { passive: true });
-  } catch (err) {
-    // Non-critical enhancement
-  }
-}
-
 initLenis();
-
-// Defer non-critical enhancements until after first render
-requestAnimationFrame(() => {
-  initCursorGlow();
-  initCardMagnetic();
-});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
